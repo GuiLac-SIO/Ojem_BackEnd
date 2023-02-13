@@ -9,7 +9,8 @@ class User {
       let token = jwt.sign(
         { id: value.use_id },
         process.env.SECRET_KEY || "default-secret-key",
-        { expiresIn: "1d" }
+        { noTimestamp:true, expiresIn: '1h' }
+        
       );
       res.status(200).json({ token });
     }

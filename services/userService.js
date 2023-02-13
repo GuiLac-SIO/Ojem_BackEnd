@@ -1,13 +1,5 @@
 const pool = require("../config/config");
 
-module.exports.getUser = () => {
-  pool.query(
-    `SELECT * FROM user WHERE use_id = 2; `,
-    function (err, results, fields) {
-      console.log(results); // results contains rows returned by server
-    }
-  );
-};
 
 module.exports.login = async (req, res) => {
   try {
@@ -15,7 +7,7 @@ module.exports.login = async (req, res) => {
       .query(
         `SELECT * FROM user WHERE use_mail = '${req.body.email}' AND use_mdp = '${req.body.password}'`
       )
-      .then((res) => {
+      .then((res) => { 
         return res[0];
       })
       .catch((error) => {
@@ -30,19 +22,15 @@ module.exports.login = async (req, res) => {
 
 const jwt = require("jsonwebtoken");
 
-module.exports.generateToken = (payload) => {
-  return jwt.sign(payload, process.env.SECRET_KEY || "default-secret-key", {
-    expiresIn: "1h",
-  });
-};
-
+ 
 module.exports.inscription = (req, res) => {
   try {
+     
     return pool
       .query(
-        `INSERT INTO user (use_nom, use_prenom, use_sexe, use_date_naissance, use_mail, use_date_inscription, use_photo,use_mdp, use_token, use_removed, use_salte) 
-          VALUES ('${req.body.nom}','${req.body.prenom}','${req.body.sexe}','${req.body.datenaissance}','${req.body.email}','${req.body.inscription}',
-          '${req.body.photo}', '${req.body.password}',' ${req.body.token}', '${req.body.removed}',  '${req.body.salte}') `
+        `INSERT INTO user (use_nom, use_prenom,  use_mail, use_date_inscription, use_mdp ) 
+          VALUES ('${req.body.nom}','${req.body.prenom}','${req.body.email}','${req.body.date_inscription}',
+           '${req.body.password}') `
       )
       .then((res) => {
         return true;

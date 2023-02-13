@@ -3,12 +3,16 @@ const { restart } = require("nodemon");
 
 module.exports.validateToken = (req, res, next) => {
   let response = {};
-  try {
+  try { 
     if (!req.headers.authorization) {
       throw new Error("Token is missing from header");
     }
-    const userToken = req.headers.authorization.split("Bearer")[1].trim();
-    jwt.verify(userToken, process.env.SECRET_KEY || "default-secret-key");
+    console.log(req.headers.authorization);
+   
+      const userToken = req.headers.authorization.split("Bearer")[1].trim();
+      jwt.verify(userToken, process.env.SECRET_KEY || "default-secret-key");
+      const decodedJwtToken = jwt.decode(userToken) 
+      console.log(decodedJwtToken);
     return next();
   } catch (error) {
     console.error("Error in tokenValidation.js", error);

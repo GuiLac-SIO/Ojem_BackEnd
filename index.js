@@ -1,22 +1,27 @@
-const express = require("express");
-const router = require("./routes/routes.js");
+const express = require('express');
 
-// import library and files
+ 
+
 const fs = require("fs");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const customCss = fs.readFileSync(process.cwd() + "/swagger.css", "utf8");
+// import des packages
+const app = require("express")(); 
+// package utilisé pour créer un serveur
+require("dotenv").config(); 
+// package utilisé pour créer des variables d'environnement
+// import des routes
+const userRoutes = require("./routes/userRoutes");
+app.use(userRoutes);
 
-const app = express();
 // let express to use this
 app.use(
   "/api-docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, { customCss })
 );
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.json());
 
 app.use((_, res, next) => {
@@ -26,6 +31,12 @@ app.use((_, res, next) => {
     next();
 });
 
-app.use(router);
 
-app.listen(5000);
+// route .all qui attrape toutes les requêtes vers des routes non existantes
+app.all("*", (req, res) => {
+  return res.status(404).json({ error: "Page Not Found" });
+});
+// démarrage du serveur
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`Server Has Started on port ${process.env.PORT || 3001}`);
+});

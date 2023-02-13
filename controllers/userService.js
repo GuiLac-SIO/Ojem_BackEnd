@@ -72,8 +72,8 @@ module.exports.inscription =  (req, res) => {
 module.exports.inscriptionEnfant =  (req, res) => {
 
     try {  console.log('AJOUTER');
-          return pool.query(`INSERT INTO enfant (enf_nom, enf_prenom, enf_sexe, enf_date_naissance, enf_removed ) 
-          VALUES ('${req.body.nom}','${req.body.prenom}','${req.body.sexe}','${req.body.datenaissance}','${req.body.removed}')`
+          return pool.query(`INSERT INTO enfant (enf_nom, enf_prenom, enf_sexe, enf_date_naissance, enf_removed, enf_use_id ) 
+          VALUES ('${req.body.nom}','${req.body.prenom}','${req.body.sexe}','${req.body.datenaissance}','${req.body.removed}', '${req.body.use_id}')`
           ).then((res) => { 
             return true;
            

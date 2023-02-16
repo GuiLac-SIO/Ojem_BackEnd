@@ -4,20 +4,25 @@ let jwt = require("jsonwebtoken");
 class User {
   login = async (req, res) => {
     const value = await userService.login(req, res);
-
-    if (value && value.length) {
+   if(!value){
+    res.status(200).json(value);
+   } 
+    else{
       let token = jwt.sign(
-        { id: value.use_id },
+        { id: value[0].use_id },
         process.env.SECRET_KEY || "default-secret-key",
-        { noTimestamp:true, expiresIn: '1h' }
+        {  expiresIn: '1h' }
         
-      );
+      );  console.log(token);
       res.status(200).json({ token });
     }
+  
   };
 
-  getUser = (req, res) => {
-    res.status(200).json({ message: "getUser est connecté !" });
+  getUser = async(req, res) => {
+    const value = await userService.getUser(req, res);
+    console.log('BBBBBBBB',value)
+    res.status(200).json(value);
   };
 
   inscription = async (req, res) => {
@@ -25,6 +30,9 @@ class User {
 
     if (value) {
       res.status(200).json(true);
+    }
+    else{
+      res.status(200).json(false)
     }
   };
 

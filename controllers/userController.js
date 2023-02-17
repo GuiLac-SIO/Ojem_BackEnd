@@ -2,6 +2,16 @@ const userService = require("../services/userService");
 let jwt = require("jsonwebtoken");
 
 class User {
+    
+  update = async (req,res) =>{
+   
+    const value = await userService.update(req, res);
+  
+    if(value){
+      res.status(200).json({ value });
+    }
+  }
+
   login = async (req, res) => {
     const value = await userService.login(req, res);
    if(!value){
@@ -13,7 +23,7 @@ class User {
         process.env.SECRET_KEY || "default-secret-key",
         {  expiresIn: '1h' }
         
-      );  console.log(token);
+      );  
       res.status(200).json({ token });
     }
   
@@ -21,7 +31,7 @@ class User {
 
   getUser = async(req, res) => {
     const value = await userService.getUser(req, res);
-    console.log('BBBBBBBB',value)
+    
     res.status(200).json(value);
   };
 
@@ -37,11 +47,18 @@ class User {
   };
 
   inscriptionEnfant = async (req, res) => {
+ 
     const value = await userService.inscriptionEnfant(req, res);
 
     if (value) {
       res.status(200).json(true);
     }
+  };
+
+  getEnfant = async(req, res) => {
+    const value = await userService.getEnfant(req, res);
+    
+    res.status(200).json(value);
   };
 }
 module.exports = User;

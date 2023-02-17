@@ -10,8 +10,7 @@ module.exports.validateToken = (req, res, next) => {
  
       const userToken = req.headers.authorization.split("Bearer")[1].trim();
       jwt.verify(userToken, process.env.SECRET_KEY || "default-secret-key");
-      const decodedJwtToken = jwt.decode(userToken) 
-      console.log(decodedJwtToken);
+      const decodedJwtToken = jwt.decode(userToken)  
       req.decodedJwtToken = decodedJwtToken;
     return next();
   } catch (error) {
